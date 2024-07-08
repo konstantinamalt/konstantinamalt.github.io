@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How transparent is US influence in EU legislation?</title>
+
+  <!-- Google fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+    rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-size: 20px;
+      font-family: Georgia, 'Times New Roman', Times, serif;
+      text-rendering: optimizeLegibility;
+    }
+
+    .content {
+      max-width: 640px;
+      margin: auto;
+    }
+
+    .header {
+      padding: 3em 0;
+    }
+
+    a {
+      color: #f05349;
+    }
+
+    .footer {
+      background: #f4f4f4;
+      text-align: center;
+      font-size: 0.8em;
+      margin-top: 4em;
+      padding: 4em 0;
+    }
+
+    figure {
+      margin: 0;
+      padding-bottom: 1.2em;
+      text-align: center;
+    }
+
+    figcaption {
+      font-size: 0.8em;
+      text-align: center;
+      margin-top: 0.5em;
+      color: #666;
+    }
+
+    h1 {
+      font-family: 'Lora', Georgia, serif;
+      font-weight: bold;
+      font-size: 3em;
+      line-height: 1.1;
+    }
+
+    .subhead {
+      font-family: 'Lora', Georgia, serif;
+    }
+
+    iframe,
+    img,
+    video {
+      max-width: 100%;
+    }
+
+    p {
+      line-height: 1.6;
+      margin: 0;
+      padding-bottom: 1.2em;
+    }
+
+    ul {
+      margin: 0;
+      padding-bottom: 1em;
+      line-height: 1.6;
+    }
+
+    iframe {
+      padding-bottom: 1.2em;
+    }
+
+    .full-width figure {
+      text-align: center;
+    }
+
+    code {
+      font-family: 'Courier New', monospace;
+      background: #fff880;
+    }
+
+    /* margin on mobile */
+    @media (max-width: 640px) {
+      body {
+        font-size: 18px;
+      }
+
+      .content {
+        padding-left: 0.5em;
+        padding-right: 0.5em;
+      }
+    }
+  </style>
+  <link href="scrolly-styles.css" rel="stylesheet">
+  <script src="https://unpkg.com/intersection-observer@0.5.1/intersection-observer.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/scrollama/3.2.0/scrollama.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.3.0/d3.min.js"></script>
+</head>
+
+<body>
+  <div class="content">
+    <div class="header">
+      <h1>How transparent is US influence in EU legislation?</h1>
+      <p class="subhead">US influence in the EU is at its peak with 314 registered companies actively lobbying
+        to shape policies. However, transparency remains a concern: Over the past decade,
+        149 of these companies haven't attended any meetings despite spending over 61 million euros on lobbying.</p>
+    </div>
+    <figure><img src="page_image.png">
+    </figure>
+    <div class="byline">
+      <p>By <a href="https://github.com/konstantinamalt">Konstantina Maltepioti</a></p>
+    </div>
+    <p>I have always wondered about the ethics of lobbying, especially when it's performed by big corporations.
+      Is it good? Bad? Is it even legal? According to the <a href="https://www.europarl.europa.eu/at-your-service/en/transparency/lobby-groups"> European Parliament's page</a> lobbying is not only legal
+      but important and a "necessary part of the decision-making process to make sure that EU policies reflect
+      people’s real needs". But how often the interests of trillion-dollar companies reflect people's needs?
+    </p>
+    <p>In 2020, a <a href="https://www.nytimes.com/2020/12/14/technology/big-tech-lobbying-europe.html">leaked document</a> exposing in detail Google's plans to undermine new European legislation
+      that could harm its digital advertising business showed how Big Tech companies are using lobbying to halt regulations against them.
+    </p>
+    <p>Big Tech, which refers to Google, Amazon, Apple, Meta (Facebook), and Microsoft -the largest IT companies in the world-
+      is the biggest lobby sector in the EU by spending, ahead of pharma, fossil fuels, finance, and chemicals,
+      according to a <a href="https://corporateeurope.org/sites/default/files/2021-08/The%20lobby%20network%20-%20Big%20Tech%27s%20web%20of%20influence%20in%20the%20EU.pdf">report</a> published in 2021 by research group,
+      Corporate Europe Observatory. Out of all the companies lobbying the EU on digital policy, 20 percent are US based.
+    </p>
+    <figure>
+      <img
+        src="Top 10 biggest US lobbying spenders.png"
+        alt="alt=This is a bar chart showing the money spent by US companies to influence EU legislation and policies in 2023.
+        Microsoft is first with 7 million euros, Apple is second with 7 million euros as well, Google is third with 5.5 million euros,
+        QUALCOMM is fourth with 4 million, Intel is fifth with 2 million, IBM is sixth with 1.75 million,
+        Cisco System is seventh with 1.5 million, Pfizer is eigth with 1.25 million,
+        General Electric Company is ninth with 1.24 million, and Amgen is tenth with 1 million euros.">
+    </figure>
+    <p>Last year, Microsoft declared 7 million euros for lobbying costs sharing the title of the biggest US lobbying spender with Apple.
+      Apple has also been the number one spender in 2022 as well, declaring 6.5 million euros in lobbying costs.
+      Surprisingly, Microsoft ramped up its spending by 40 percent since 2022, when it declared 5 million euros.
+    </p>
+    <p>In reality, these numbers are just an estimation, since there is no actual number to measure lobbying activity.
+      As of 2021, lobby consultancies are only required to declare their annual revenue from lobbying in very large bracketed thresholds.
+      <a href="https://www.lobbyfacts.eu/about">LobbyFacts</a>, a joint project between two research groups, Corporate Europe Observatory and <a href="https://www.lobbycontrol.de/"> Lobby Control </a>,
+      takes the minimum number of each bracket and calculates a total for each registrant based on a tally of the individual sums declared per client per year. This makes the figures more precise than the EU Register but according to LobbyFacts "a major under-estimation".
+    </p>
+    <p>It’s important to keep in mind that the financial declarations are the sole responsibility of each company.
+      LobbyFacts warns that if an organization lists one or more EP-accredited lobbyists,
+      it may not be probable that its lobbying costs are lower than 10,000 euros, which is the case for some US companies.
+    </p>
+    <figure>
+      <img
+        src="Total lobby costs over a decade_1.png"
+        alt="alt=This is a line chart showing the money spent by US companies to influence EU legislation and policies from 2014 to 2023.
+        In 2014 the total lobbying costs of all US companies was 24.7 million euros.
+        In 2015 it was 38 million. In 2016 it was 48.6 million. In 2017 it was 56.5 million. In 2018 57.1 million.
+        In 2019 61.2 million. In 2020 63.4 million. In 2021 61.1 million.
+        In 2022 74.5 million euros. In 2023 87.9 million.">
+    </figure>
+    <p>In the last decade, US companies lobbying the EU are increasing by hundreds while the money spent from their activity is increasing by millions.
+      Since 2021, the lobbying costs have risen by 44 percent, while in a four year period from 2017 to 2021, the money spent for lobbying increased only by 8 percent.
+      Spending money to advocate for your interest is not bad, since citizens have to make their concerns heard in a way besides elections.
+      However, the greater the resources, the greater the influence, meaning that eventually the voices being heard are the ones of big companies.
+    </p>
+    <p>But where does this money go?
+    </p>
+  </div>
+  <section id="scrolly-images" class="scrolly-container">
+    <div class="sticky-thing">
+      <img src="all_spending_ILL-01.png">
+    </div>
+    <div class="steps-container">
+      <div class="step" id="step1">
+        <div>
+          <p>These are the top spenders over the past decade.
+            The money could go goes towards a myriad of tactics, from hiring experienced lobbyists,
+            and organizing events to have access to policymakers, to even donating to political parties.</p>
+        </div>
+      </div>
+      <div class="step" id="step2">
+        <p>Out of these 314 companies, 165 have participated in meetings with EU officials.
+          The darker shades represent more meetings. Interestingly, some companies reported higher
+          lobbying expenditures despite appearing in fewer meetings.</p>
+      </div>
+      <div class="step" id="step3">
+        <p>While there are 149 companies who have allegedly had no meetings, yet still have spent 61 millions for lobbying.
+          20 of them have declared more than 1 million euros in lobbying spending.
+        </p>
+      </div>
+    </div>
+  </section>
+  <div class="content">
+    <p>Since December 1, 2014, the European Commission has made public online records of all meetings between Commissioners,
+      their Cabinet members, Directors-General, and organizations listed in the register.
+      Over the past decade, US companies have been involved in 2,469 of these meetings.
+    </p>
+    <p>The companies that have appeared in more than a hundred meetings each are Google (368), Microsoft (207),
+      IBM Corporation (140), Apple (106), and the General Electric Company (105). However, in reality,
+      a registrant company may have had other lobby meetings with lower-level officials in the Commission,
+      but the published data -a <a href="https://www.europarl.europa.eu/doceo/document/RULES-9-2023-11-01-ANN-01_EN.html">responsibility of EU officials</a>- covers elite officials only.
+    </p>
+    <p>Big Tech companies have been lobbying Europe's digital economy extensively for years. But their budget is not their only form of power, it’s also their market power.
+      Their global monopoly can let them argue that, without political support, jobs will be cut or the tax office will be moved abroad. Professor, Shoshana Zuboff,
+      has argued that lobbying has acted as the defense that allowed a business model, built on violating people’s privacy and unfairly dominating the market, to flourish without being challenged.
+    </p>
+    <p>
+    </p>
+    <strong>Methodology</strong>
+      <p><em>Data for the names of the US companies lobbying the EU were downloaded as a CSV file from the EU Transparency Register.
+      Data for the companies financial information was collected through scraping the site LobbyFacts,
+      by creating the URL for downloading the CSV files of each company based on their registration number
+      from the EU Register, storing them in a dataframe and merging them together to conduct the analysis using
+      Python. Data for the meetings was also collected and analyzed in the same way.
+      LobbyFacts sources: <a href="https://transparency-register.europa.eu/index_el">EU Transparency Register</a> and the <a href="https://data.europa.eu/data/datasets/european-commission-meetings-with-interest-representatives?locale=en">European Commission’s data
+      on its high-level lobby meetings</a></em></p></p>
+  </div>
+
+  <script>
+    /*************
+    
+    This is the JavaScript that makes the scrolly work 
+    
+    *************/
+
+    /* 
+    This part attaches a scroll to the element with id="scrolly-images"    
+    */
+    (() => {
+      const scroller = scrollama()
+
+      scroller
+        .setup({
+          parent: document.querySelector("#scrolly-images"),
+          step: ".step",
+          offset: 0.6,
+        })
+        .onStepEnter(function ({ element, index, direction }) {
+          const event = new CustomEvent("stepin", { detail: { direction: direction } })
+          element.dispatchEvent(event)
+        })
+        .onStepExit(function ({ element, index, direction }) {
+          const event = new CustomEvent("stepout", { detail: { direction: direction } })
+          if (direction === "up" && element.previousElementSibling) {
+            const event = new CustomEvent("stepin", { detail: { direction: direction } })
+            element.previousElementSibling.dispatchEvent(event)
+          }
+        })
+
+      window.addEventListener("resize", scroller.resize)
+    })()
+
+    /*
+    This part sets up your actions. In this case, it's changing the image in the scrolly container.
+    */
+    d3.select("#step1").on('stepin', (e) => {
+      d3.select(e.target.closest(".scrolly-container")).select("img").attr("src", "all_spending_ILL-01.png")
+    })
+
+    d3.select("#step2").on('stepin', (e) => {
+      d3.select(e.target.closest(".scrolly-container")).select("img").attr("src", "meetings_ILL-01.png")
+    })
+
+    d3.select("#step3").on('stepin', (e) => {
+      d3.select(e.target.closest(".scrolly-container")).select("img").attr("src", "no_meetings_ILL-01.png")
+    })
+  </script>
+  <style>
+    /* Change this to adjust the padding between steps */
+    .step {
+      margin-bottom: 70vh;
+    }
+  </style>
+
+</body>
+
+</html>
