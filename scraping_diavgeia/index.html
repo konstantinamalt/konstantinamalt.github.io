@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Scraping Diavgeia - A Guide to Analyzing Greek Public Contracts by Parsing PDFs</title>
+
+    <!-- Google fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-size: 20px;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            text-rendering: optimizeLegibility;
+        }
+
+        .content {
+            max-width: 640px;
+            margin: auto;
+        }
+
+        .header {
+            padding: 3em 0;
+        }
+
+        a {
+            color: #f05349;
+        }
+
+        .footer {
+            background: #f4f4f4;
+            text-align: center;
+            font-size: 0.8em;
+            margin-top: 4em;
+            padding: 4em 0;
+        }
+
+        figure {
+            margin: 0;
+            padding-bottom: 1.2em;
+        }
+
+        figcaption {
+            font-size: 0.8em;
+            text-align: center;
+            margin-top: 0.5em;
+            color: #666;
+        }
+
+        h1 {
+            font-family: 'Lora', Georgia, serif;
+            font-weight: bold;
+            font-size: 3em;
+            line-height: 1.1;
+        }
+
+        .subhead {
+            font-family: 'Lora', Georgia, serif;
+        }
+
+        .full-width figure {
+            text-align: center;
+        }
+
+        iframe,
+        img,
+        video {
+            max-width: 100%;
+        }
+
+        p {
+            line-height: 1.6;
+            margin: 0;
+            padding-bottom: 1.2em;
+        }
+
+        ul {
+            margin: 0;
+            padding-bottom: 1em;
+            line-height: 1.6;
+        }
+
+        iframe {
+            padding-bottom: 1.2em;
+        }
+
+        code {
+            font-family: 'Courier New', monospace;
+            background: #fff880;
+        }
+
+        /* margin on mobile */
+        @media (max-width: 640px) {
+            body {
+                font-size: 18px;
+            }
+
+            .content {
+                padding-left: 0.5em;
+                padding-right: 0.5em;
+            }
+        }
+    </style>
+    <style>
+        .with-image-bg,
+        .with-video-bg {
+            position: relative;
+            background-size: cover;
+            margin-bottom: 2em;
+    
+            /* Center everything inside */
+            min-height: 70svh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+    
+            /* Remove text shadow */
+            color: rgb(255, 255, 255);
+            text-shadow: none; /* Remove text shadow */
+        }
+    
+        .with-image-bg {
+            background-image: url('bg-image.jpg');
+        }
+    
+        .video-background {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Ensure video is behind overlay and text */
+        }
+    
+        .video-background video {
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+        }
+    
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Black with 50% opacity */
+            z-index: 0; /* Above video but below text */
+        }
+    
+        .text-container {
+            position: relative;
+            z-index: 1; /* Ensure text is above the overlay */
+            background-color: rgba(115, 115, 115, 0.7); /* Semi-transparent background for text */
+            padding: 20px; /* Padding to create space around text */
+            border-radius: 0px; /* Optional: Rounded corners */
+            text-align: center; /* Center align text */
+            max-width: 800px;
+            margin: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- <div class="header with-image-bg">
+        <div class="content">
+            <h1>Scraping Diavgeia - A Guide to Analyzing Greek Public Contracts by Parsing PDFs</h1>
+            <p class="subhead">In July 2010, Greece’s "Diavgeia" Transparency Program mandated that all public sector documents be posted online, enhancing accessibility and accountability. While this reform has greatly improved public data availability, the vast number of documents can make extraction and analysis challenging. Python programming offers effective tools to navigate and make sense of this extensive data.
+            </p>
+        </div>
+    </div>
+    <div class="content">
+        <div class="byline">
+            <p>By <a href="https://github.com/konstantinamalt">Konstantina Maltepioti</a></p>
+        </div>
+        <p>We had to create another <code>class="content"</code> before the byline/after the header so everything would
+            line up okay.</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+            magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+            commodo consequat.</p> -->
+    </div>
+
+    <div class="header with-video-bg">
+        <div class="video-background">
+            <video src="diavgeia_video.mp4" preload="auto" tabindex="0" playsinline autoplay loop muted></video>
+        </div>
+        <div class="overlay"></div> <!-- Black overlay -->
+        <div class="text-container">
+            <h1>Scraping Diavgeia - A Guide to Analyzing Greek Public Contracts by Parsing PDFs</h1>
+            <p class="subhead">In July 2010, Greece's "Diavgeia" Transparency Program required that all public sector documents be published online,
+                significantly improving accessibility and accountability. Although this reform has made public data more available, the sheer volume
+                of documents poses challenges for extraction and analysis. Python programming provides powerful tools to effectively manage and
+                interpret this vast array of data.
+            </p>
+        </div>
+    </div>
+    <div class="content">
+        <div class="byline">
+            <p>By <a href="https://github.com/konstantinamalt">Konstantina Maltepioti</a></p>
+        </div>
+        <p style="font-style: italic;">"The object of this law is to introduce the obligation to post online the laws, presidential decrees, and acts issued by the persons and bodies”, from the wider public sector all the way to the Prime Minister, and “to create the conditions for ensuring wide accessibility to them."
+        </p>
+        <p style="font-style: italic;">
+           - Article 1 of 3861/2010, published on July 13, 2010
+        </p>
+        <p>On October 1, 2010, almost three months after the law was published,
+            all Greek government institutions were obliged to start uploading their acts and decisions on the Internet
+            keeping in mind issues of national security and sensitive personal data.
+        </p>
+        <p>This was the beginning of the Transparency Program initiative called “Diavgeia”,
+            one of the best reforms of the last decade that has revolutionized access to public contracts,
+            assignments and other data mostly related to the allocation of public money.
+        </p>
+        <p>Every day, hundreds of documents in the form of PDF are being uploaded to Diavgeia’s Portal.
+            This vast majority of information is both its greatest advantage and its main problem.
+        </p>
+        <p>This project attempts to help journalists, researchers and the public to better investigate the documents
+            published in Diavgeia with the help of the programming language, Python. 
+        </p>
+        <p style="font-style: italic;">See the entire code with further explanations in <a href="">this</a> Jupyter Notebook. 
+        </p>
+        <h2>Step One: Filter Diavgeia’s Portal and get the API</h2>
+        <p>The public organization of focus here is the Ministry of Infrastructure and Transportation and its public contracts.
+            To scrape the documents and additional data from Diavgeia, input the organization's name and the type of document
+            in the respective fields in the “Advanced Search” feature.
+        </p>
+    </div>
+        <div  style="text-align: center;">
+        <img src="1.png" alt="This is a snapshot explaining how Diavgeia's portal can be filtered" style="width: 70%; height: auto; display: inline-block;"">
+        </div>
+    <div class="content">
+        <p>There is no limit to the filters, in fact the more focused the search the better the results.
+            It’s worth noting that using a specific type of document increases the likelihood of a consistent layout
+            across the documents, which simplifies the process of data extraction later on.
+        </p>
+        <p>After filtering the portal by document type and organization, there is an option to either download an excel file
+            to save the results or use Diavgeia’s API, which stands for Application Programming Interface, instead.
+        </p>
+    </div>
+    <div  style="text-align: center;">
+    <img src="2.png" alt="This is a snapshot explaining how to get Divgeia's API" style="width: 70%; height: auto; display: inline-block;"">
+    </div>
+<div class="content">
+    <p>An API is a way for computers to talk to each other, and while an Excel file can be useful,
+        an API can provide real-time access to the most current data, eliminating the need to
+        repeatedly filter a portal and download updated spreadsheets. It also gives the ability to search directly
+        to Diavgeia's portal without visiting the site by constructing the url properly.
+    </p>
+</div>
+    <div style="text-align: center;">
+    <img src="3.png" alt="This is a snapshot showing the JSON file from Divgeia's API" style="width: 70%; height: auto; display: inline-block;"">
+        <p style="margin-top: 10px; width: 70%; font-style: italic; display: inline-block;">Note: The results shown on Diavgeia’s page are 5,215,
+        however both the API and the Excel file provide only 3,000 results.
+        This can be due to the large size of the data. To avoid losing any files, make your search even more specific,
+        filtering by year or keywords. 
+        </p>
+    </div>
+<div class="content">
+    <p>Clicking on the JSON icon will open a file in a url. To scrape the data copy and paste the url to any work environment,
+        in this case a Jupyter Notebook.
+    </p>
+    <h2>Step Two: Download and store the results using Python</h2>
+</div>
+<div  style="text-align: center;">
+    <img src="6.png" alt="This is a snapshot of a table with the scraped data from Divgeia's API." style="width: 70%; height: auto; display: inline-block;"">
+    </div>
+<div class="content">
+    <p>The Python libraries and modules to get the available data from the API, i.e. the name and url of each public contract
+        in the form of .pdf, its protocol number, the date it was uploaded to Diavgeia, and a brief description of its content,
+        and store them in a table are Requests, Pandas and JSON.
+    </p>
+    <h2>Step Three: Download and store the PDFs</h2>
+    <p>The pdf files can be found in the column “doc_url”, and are automatically downloaded in the computer when their url is opened.
+        In this case, the “os” Python module (operating system) was used to create a directory in the computer where the files
+        are going to be stored. When requesting multiple .pdf files, it’s important to give the site a “timeout” to prevent network
+        issues and server problems.
+    </p>
+    <p>The results will look something like this:
+    </p>
+    </div>
+    <div style="text-align: center;">
+        <img src="4.png" alt="This is a snapshot of the downloaded PDFS in a jupyter notebook." style="width: 70%; height: auto; display: inline-block;"">
+        </div>
+    <div class="content">
+        <p> Even with a “timeout” between requests, due to the large number of documents, network issues may occur,
+            leading to some documents being missed. In this instance, 70 documents are missing. Given the many requests made,
+            it was decided to proceed with the available data rather than attempt further retrievals.
+        </p>
+        <h2>Step Four: Convert the text</h2>
+        <p>To get data from the .pdfs first the files must be converted to an editable format.
+            This was conducted with the help of the “pdfplumber” library, which extracted the text from each pdf.
+            The text on a few of these files was not readable either due to the mix of Greek and English characters on them
+            or because the pdfs might be corrupted. It is important for the analysis to have all the pages of one file in a single cell
+            to avoid duplicates.
+            The result after merging the text to the existing table looks something like this:</p>
+    </div>
+    <div style="text-align: center;">
+            <img src="5.png" alt="This is a snapshot of the table with the extracted text of the PDFS in a jupyter notebook." style="width: 70%; height: auto; display: inline-block;"">
+        </div>
+    <div class="content">
+        <h2>Step Five: Extract the data</h2>
+        <p style="font-style: italic;">See the entire code with further explanations in <a href="">this</a> Jupyter Notebook.</p>
+    </div>
+        <div style="text-align: center;">
+            <img src="7.png" alt="This is a snapshot of the downloaded PDFS in a jupyter notebook." style="width: 70%; height: auto; display: inline-block;"">
+        </div>
+    <div class="content">
+        <p> The snapshot showcases a typical structure of a public contract. This part is at the end of most files,
+            and it can be used to extract important information such as the social number of the recipient,
+            the recipient name and the payment amount. This was achieved through the “regular expressions”,
+            a powerful tool for matching and manipulating text based on specific patterns.
+        </p>
+        <p>The easiest pattern that can be extracted from the pdfs is the social number of the recipient (ΑΦΜ).
+            It’s a nine-digit pattern following the text “ΑΦΜ” that should be in all of the documents except in cases
+            where there is no recipient, or the recipient is a foreign entity or an entity without a social number.
+            Since they can be more than one recipient in a contract, all social numbers must be identified.
+            It’s important to keep in mind that a social number can be missing or misspelled due to human error. 
+        </p>
+        <p> Due to the varying structures and inconsistent formats across the PDFs, extracting recipient names can be very challenging.
+            However, this doesn’t make the extraction process futile. Social security numbers,
+            which identify the recipients, can still be analyzed to highlight outliers and provide useful insights.
+        </p>
+        <p>Another insight that can be extracted through regular expression from the column “subject” is the number of direct contracts.
+            This refers to agreements where government agencies or public institutions buy goods, services, or work directly
+            from a provider without holding a competitive bidding process. This approach is not illegal,
+            it’s often used under specific conditions where a competitive tendering process might be deemed unnecessary or impractical,
+            however it can lead to transparency issues and increase the risk of favoritism or misuse of public funds.
+        </p>
+    </div>
+    <div class="footer">
+        <div class="content">
+            <p>The Github repository with the Jupyter Notebooks for the scraping of the PDFs and text extraction can be found <a href="">here</a>.
+        </div>
+    </div>
+
+</body>
+
+</html>
