@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Troubled Waters: Analyzing satellite flood data with Copernicus and constructing a decade-long dataset</title>
+
+  <!-- Google fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+    rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-size: 20px;
+      font-family: Georgia, 'Times New Roman', Times, serif;
+      text-rendering: optimizeLegibility;
+    }
+
+    .content {
+      max-width: 640px;
+      margin: auto;
+    }
+
+    .header {
+      padding: 3em 0;
+    }
+
+    a {
+      color: #f05349;
+    }
+
+    .footer {
+      background: #f4f4f4;
+      text-align: center;
+      font-size: 0.8em;
+      margin-top: 4em;
+      padding: 4em 0;
+    }
+
+    figure {
+      margin: 0;
+      padding-bottom: 1.2em;
+      text-align: center;
+    }
+
+    figcaption {
+      font-size: 0.8em;
+      text-align: center;
+      margin-top: 0.5em;
+      color: #666;
+    }
+    .hero {
+      position: relative; /* Needed for positioning the overlay */
+      width: 100vw;
+      height: 80vh;
+      background-image: url('page_image_copernicus.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: left;
+      color: white;
+      overflow: hidden; /* Ensures overlay stays contained */
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.4); /* Dark overlay */
+      z-index: 1;
+    }
+
+    .overlay-text {
+      position: relative;
+      z-index: 2; /* Puts the text above the overlay */
+      padding: 2em;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+
+    .hero h1 {
+      font-family: 'Lora', Georgia, serif;
+      font-weight: bold;
+      font-size: 2.5em;
+      line-height: 1.2;
+      margin: 0;
+    }
+
+    .subhead {
+      font-family: 'Lora', Georgia, serif;
+      font-size: 1.2em;
+      margin-top: 1em;
+    }
+
+
+    h1 {
+      font-family: 'Lora', Georgia, serif;
+      font-weight: bold;
+      font-size: 3em;
+      line-height: 1.1;
+    }
+
+    .subhead {
+      font-family: 'Lora', Georgia, serif;
+    }
+
+    iframe,
+    img,
+    video {
+      max-width: 100%;
+    }
+
+    p {
+      line-height: 1.6;
+      margin: 0;
+      padding-bottom: 1.2em;
+    }
+
+    ul {
+      margin: 0;
+      padding-bottom: 1em;
+      line-height: 1.6;
+    }
+
+    iframe {
+      padding-bottom: 1.2em;
+    }
+
+    .full-width figure {
+      text-align: center;
+    }
+
+    code {
+      font-family: 'Courier New', monospace;
+      background: #fff880;
+    }
+
+    /* margin on mobile */
+    @media (max-width: 640px) {
+      body {
+        font-size: 18px;
+      }
+
+      .content {
+        padding-left: 0.5em;
+        padding-right: 0.5em;
+      }
+    }
+  </style>
+  <link href="scrolly-styles.css" rel="stylesheet">
+  <script src="https://unpkg.com/intersection-observer@0.5.1/intersection-observer.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/scrollama/3.2.0/scrollama.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.3.0/d3.min.js"></script>
+</head>
+
+<body>
+  <div class="hero">
+    <div class="overlay-text">
+      <h1>From Space to Spreadsheet: The Troubled Waters Methodology for Analysing Floods Across Europe Using Copernicus Satellite Data and Other Sources</h1>
+      <p class="subhead">Flood data in Europe is fragmented and inconsistent. By combining satellite data with public records, we built 
+        a decade-long dataset of flood impacts—revealing the most vulnerable regions and the urgent need for a unified EU disaster database.
+      </p>
+    </div>
+  </div>
+
+  <!-- Main Content (Centered) -->
+  <div class="content">
+    <div class="byline">
+      <p>By <a href="https://github.com/konstantinamalt">Konstantina Maltepioti</a></p>
+    </div>
+    <p>The <a href="https://miir.gr/longreads/flood-in-europe-en.html" target="_blank" rel="noopener noreferrer">Troubled Waters</a> 
+      project set out to analyze and map the impact of flooding across Europe, assess the types of land and infrastructure affected, 
+      and ultimately identify the most vulnerable regions and communities over the past decade.
+    </p>
+    <p>An initial search for open European flood data—covering basic indicators such as flood extent, fatalities, affected population, and damage to homes
+       and infrastructure—revealed a fragmented and inconsistent landscape. Data was often incomplete, outdated, or missing key parameters necessary for long-term analysis.
+    </p>
+    <p>To better understand the available data, we reached out to three institutions with published information on natural disasters: 
+       European Environment Agency (<a href="https://www.eea.europa.eu/en" target="_blank" rel="noopener noreferrer">EEA</a>),
+      the European Commission’s <a href="https://mapping.emergency.copernicus.eu/" target="_blank" rel="noopener noreferrer">Copernicus Emergency Management Mapping service</a>,
+      and the Centre for Research on the Epidemiology of Disasters (<a href="https://public.emdat.be/"target="_blank" rel="noopener noreferrer">CRED</a>).
+      It became clear that comprehensive, regularly updated official data on European floods covering
+      the parameters we needed for the decade, were not available.
+    </p>
+    <p>Following their recommendations, we focused on three open datasets they referenced
+      as reliable sources for flood data and its impact across Europe over the last decade:</p>
+      <ul>
+        <li><a href="https://naturalhazards.eu/database"target="_blank" rel="noopener noreferrer">Hanze</a>, with data on European floods from 1870-2020</li>
+        <li><a href="https://public.emdat.be/"target="_blank" rel="noopener noreferrer">Public EM-DAT</a>, with data on global floods up to 2024</li>
+        <li><a href="https://mapping.emergency.copernicus.eu/activations/"target="_blank" rel="noopener noreferrer">Copernicus Emergency Management Mapping service</a>, with data for global floods from 2012 - 2024</li>
+      </ul>
+    
+    <h2>Data Limitations and Challenges of Our Three Sources</h2>
+    <p>
+      Flood extent data was virtually absent in both Hanze and Public EM-DAT datasets. 
+      While some information on affected populations was available, it remained sparse and inconsistent. 
+      Detailed data on homes, land, and infrastructure affected were found only in the Copernicus Emergency 
+      Management Service (EMS) Mapping platform, and only for the last two years.
+    </p>
+    <p>
+      With the exception of Hanze, none of the datasets included accurate regional flood impact data. 
+      This required manual searching and cross-referencing with Eurostat’s NUTS classification to align 
+      regions with Hanze’s methodology and apply the European Commission’s urban-rural and coastal typology. 
+      This process helped identify which types of regions were most affected.
+    </p>
+    <p>
+      In terms of the number of floods, Hanze appears to have the most comprehensive dataset.
+      Its data were sourced from media reports, the EU Commission, and academic literature.
+    </p>
+    <p>
+      Public EM-DAT data, which were sourced from the press (mainly AFP), the DFO database (until 2022), the Reinsurance companies,
+      ECHO/EU news, and IFRC, was used only for the years 2021-2022 to bridge the gap between the Hanze dataset and Copernicus’ data.
+      However, the number of floods recorded for 2022 seems unusually low, raising concerns about the completeness of the data.
+    </p>
+    <p>
+      Copernicus, by design, does not track all floods in Europe. It only responds to requests made by
+       "<a href="https://mapping.emergency.copernicus.eu/about/who-can-request-the-service/"target="_blank" rel="noopener noreferrer">authorized users</a>" 
+      via the European Response Coordination Centre (ERCC),
+      according to their <a href="https://mapping.emergency.copernicus.eu/about/mapping-service-timeline/"target="_blank" rel="noopener noreferrer">website</a>.
+      In 2023, for instance, Germany and Bulgaria triggered Copernicus services to track their floods (EMSR701, EMSR693),
+      but no data was published due to “remote sensing limitations.”
+    </p>
+    <p>
+      Our analysis focused on <a href="https://docs.google.com/spreadsheets/d/1uqyeVvgLGWbVoQBW_5HPSSPuQ8mU_xWK/edit?usp=sharing&ouid=114673541791947965182&rtpof=true&sd=true"target="_blank" rel="noopener noreferrer">Copernicus data</a> 
+      we gathered from the past two years, as it is the only source with detailed flood extent, infrastructure,
+      and population impact data. EU member states were prioritized to ensure the relevance of findings to policy-making.
+    </p>
+    <p>
+      The <a href="https://docs.google.com/spreadsheets/d/1XBGYFv6E-iTCxA8g6vrWWFMOV7ihw_qN/edit?usp=sharing&ouid=114673541791947965182&rtpof=true&sd=true"target="_blank" rel="noopener noreferrer">final dataset</a> spans a decade, 
+      covering both EU member states and other countries, 
+      such as Serbia, to estimate the total number of European floods, affected regions, 
+      and people impacted, without comparing specific years or countries, 
+      as the datasets track flood occurrences and affected population differently.
+    </p>
+    <h2>Collecting data from Copernicus: A step-by-step guide</h2>
+    <p>
+      We collected data on floods observed by Copernicus for the years 2024 and 2023
+      by first searching all flood related data in their “<a href="https://mapping.emergency.copernicus.eu/activations/"target="_blank" rel="noopener noreferrer">Activations</a>" page.
+    </p>
+    <figure>
+      <img
+        src="activations.png">
+    </figure>
+    <p>
+      Each flood has a unique identification code and a dedicated webpage containing detailed information about the event’s impact.
+    </p>
+    <p>During the course of this project, Copernicus changed the structure of its website.
+      In the older version of a flood's webpage (see <a href="https://rapidmapping.emergency.copernicus.eu/EMSR692/"target="_blank" rel="noopener noreferrer">example</a>, still active on March 30 2025),
+      there is an option to access Copernicus’ open API, which is no longer shown in the newer versions of the flood webpages
+      (see the <a href="https://mapping.emergency.copernicus.eu/activations/EMSR692/"target="_blank" rel="noopener noreferrer">same example in the new website</a>). 
+      However, the data available through the API remains the same.
+    </p>
+    <figure>
+      <img
+        src="api.png">
+    </figure>
+    <p>
+      Once the unique IDs were collected from the “Activations” page, we used them to construct the URLs for each flood’s API. From there, 
+      we were able to extract data on flood extent, land use, infrastructure, buildings, and population affected, across all regions impacted.
+    </p>
+    <p>
+      Each flood typically affects more than one region. Copernicus refers to these as AOIs (Areas of Interest), which are defined zones of analysis
+       that do not align with official administrative boundaries. Each AOI can include multiple observations, or “products,” 
+       as Copernicus calls them, since the AOIs can be observed for multiple days on different levels. Observations made after the actual 
+       flood date often record smaller impacted areas. These observations can be found in the ‘stats’ section of the ‘aois’ in each floods’ API. 
+    </p>
+    <figure>
+      <img
+        src="stats_api.png">
+      <figcaption>You can use <a href="https://colab.research.google.com/drive/10HpvMA5D7V4cQ8-DJgU0Xt6CrwTFNBtw?usp=sharing"target="_blank" rel="noopener noreferrer">this notebook</a> 
+        to download data for all AOIs and products from the API, even if you don’t have python installed. 
+        Simply open the notebook in Google Colab, make the necessary edits to the unique IDs, and run the code.</figcaption>
+    </figure>
+    <p>
+      If the API becomes unavailable, or for smaller-scale investigations, the same data can be accessed manually. 
+      Navigate to the “Statistics” button of an AOI in the Viewer page of a flood, or download the relevant 
+      Excel file from the “Crisis Information” section on the “Details & Download” page. 
+      This method also allows users to manually select which AOIs and products they want to include.
+    </p>
+    <figure>
+      <img
+        src="alternative_statistics.png">
+    </figure>
+    <h2>Understanding Copernicus’ data</h2>
+    <h4>Which AOIs or products do we keep?</h4>
+    <p>
+      To avoid double counting flooded areas, we must select AOIs (Areas of Interest) that do not overlap. 
+      The image below, which displays AOI products with orange boundaries (each polygon representing one product), 
+      clearly illustrates overlapping AOIs. This means we need to either choose products within a larger AOI or retain only the measurements from the larger AOI.
+    </p>
+    <figure>
+      <img src="flood_in_gr.png">
+      <figcaption>Screenshot from the 
+        <a href="https://mapping.emergency.copernicus.eu/activations/EMSR692/"target="_blank" rel="noopener noreferrer">webpage</a> mapping the Thessaly flood in Greece which started on 5 September 2023,
+        retrieved at 30.3.2025, showing overlapping AOIs.</figcaption>
+    </figure>
+    <p>
+      There is no single correct answer for which product to choose. Our goal is to prevent double counting. 
+      We prioritized AOI products that were closest to the event date and/or included the highest reported population impact in their statistics.
+    </p>
+    <h4>How is the affected population measured?</h4>
+    <p>Population was a priority, as it also reflected flood extent.
+      Copernicus estimates affected population using the Global Human Settlement Population (GHS-POP) Grid, part of the Copernicus Human Settlement Layer (GHSL). 
+      This dataset combines census data with satellite imagery
+      to estimate population over flooded hectares, spreading population over small grid squares. 
+    </p>
+    <h4>How is the flood extent measured?</h4>
+    <p>Copernicus classifies both flooded areas and flood traces as part of the Observed Event Area, 
+      which is visible in the Viewer via the “Legend” option for each product.</p>
+    <figure>
+      <img src="magnesia.png">
+      <figcaption>Screenshot from the <a href="https://mapping.emergency.copernicus.eu/activations/EMSR692/"target="_blank" rel="noopener noreferrer">webpage</a> mapping the Thessaly flood in Greece on 9 September 2023, retrieved at 25.3.2025.</figcaption>
+    </figure>
+    <p>A flood trace indicates that water was present during the flood event but had receded by the time satellite imagery was captured. 
+      In some cases, Copernicus includes flood traces in its measurements under “Maximum Water Extent.”</p>
+    <p>According to Copernicus: "Indeed the flood traces are included in the maximum water extent.
+      We assume that there is a very high probability that flooding was present where traces
+      of flooding are identified on the satellite image. Therefore we include flood traces in the maximum extent of the flood (maximum water extent)."
+    </p>
+    <p>
+      Both flood traces and flooded areas are counted when describing total flood extent. For instance, 
+      in reports such as Bulletins No. 167 and 166, Copernicus combines the two to represent total impact. 
+      One <a href="https://www.copernicus.eu/en/media/image-day-gallery/copernicus-emergency-management-service-monitors-floods-valencia-spain"target="_blank" rel="noopener noreferrer">map</a> for Valencia’s floods,
+      shows affected areas in blue and flood traces in light green, reporting over 53,000 hectares affected. 
+      However, the Summary Table for the same flood lists only 22,638.6 hectares, because it excludes flood traces.
+    </p>
+    <p>However, in the "Summary Table" on the Copernicus "Details & Download" page for the same flood,
+      only 22,638.6 hectares are listed as affected—because the summary table does not include flood traces.
+    </p>
+    <p>
+      During our analysis, we discovered that the summary tables were not always up to date
+      “due to evolving procedures and products during the activation period” resulting in errors
+      and inconsistencies in the data that were corrected from Copernicus upon communication. 
+      However, flood traces are still not included in the summary tables.
+    </p>
+    <p>
+      As a result, we did not rely on the summary tables for this investigation. Instead, we manually
+      calculated the flood extent by reviewing all relevant product measurements for each AOI in the
+      Copernicus “Statistics” section on the “Viewer” page, selecting the highest recorded flood extent.
+    </p>
+    <p>
+      An initial analysis during the project indicated that the statistics (e.g., on arable land, roads, pipelines)
+      of a flood are taking flood trace, and not just flooded area, into account.
+    </p>
+    <p>
+    <h4>Our method for measuring flood extent per AOI</h4>
+      Since Copernicus presents flood extent measurements inconsistently, we manually determined the highest flood extent per AOI using the following approach:
+    </p>
+    <ul>
+      <li>If both flood trace and flooded area were available, we counted both.
+      </li>
+      <li>If only one (flood trace or flooded area) was available, we used that measurement.
+      </li>
+      <li>If “Maximum Flood Extent” was provided, we used that directly (as it includes both).
+      </li>
+      <li>If “Maximum Water Extent” was given, we excluded permanent water bodies (e.g., lakes, rivers), which are otherwise included alongside flood data. 
+        This value combines Maximum Flooded Area, Flood Trace, and Permanent Water, so filtering was needed to isolate actual flood impact.
+      </li>
+    </ul>
+    <p>This approach ensured the most accurate possible measurement per AOI, while avoiding duplication. 
+      In each case, we selected the product with the highest reported extent per AOI.
+    </p>
+    <h4>How did we normalize the data?
+    </h4>
+    <p>The data retrieved from the Copernicus API needed to be both accessible and standardized for analysis. 
+      To organize the information from each observation, we created a “subcategory unit” column, 
+      which included the raw description of the affected element (e.g. roads, farmland), along with its broader category and unit of measurement.
+      From this column, we derived four additional fields to structure the dataset:
+      Category unit, unit of measurement, and two normalized categories, one detailed and one broader.
+    </p>
+    <p>
+      The broader normalized category was created manually, based on editorial judgment. 
+      This allowed us to group similar entries under a common classification. For example, if data existed 
+      only for secondary roads in one AOI and only for primary roads in another, both were grouped under “road infrastructure.”
+    </p>
+    <figure>
+      <img src="normalization.png">
+    </figure>
+    <p>During this process, we observed that residential buildings, a key subcategory, were not consistently measured even for the same flood.
+      In some products, they were reported in hectares; in others, by building count. 
+      Due to this inconsistency, we excluded residential building data from the final analysis.
+    </p>
+    <p>We also found that Copernicus did not always apply the same unit of measurement to 
+      the same category across different floods, leading to further inconsistencies. 
+      Some infrastructure data was lost as a result.</p>
+    <h4>Identifying the region of an AOI
+    </h4>
+    <p>
+      Copernicus AOIs do not correspond to official regional boundaries. Instead, they act as reference zones designated for satellite monitoring.
+      To associate each AOI with an official region, we manually searched AOI names using online resources and the Eurostat’s Local Administrative Units
+      (<a href="https://ec.europa.eu/eurostat/web/nuts/local-administrative-units"target="_blank" rel="noopener noreferrer">LAU</a>) dataset.
+      This dataset links each locality to its corresponding NUTS 3 code, as per
+      (<a href="https://ec.europa.eu/eurostat/web/nuts/overview"target="_blank" rel="noopener noreferrer">Eurostat’s NUTS classification</a>,
+      which also categorizes regions as coastal, rural, urban, or intermediate.
+    </p>
+    <h2>Constructing the decade-long dataset
+    </h2>
+    <p>
+      After creating the 
+      <a href="https://docs.google.com/spreadsheets/d/1uqyeVvgLGWbVoQBW_5HPSSPuQ8mU_xWK/edit?usp=sharing&ouid=114673541791947965182&rtpof=true&sd=true"target="_blank" rel="noopener noreferrer">Copernicus dataset</a>,
+      we developed a smaller version to merge it with Public EM-DAT and Hanze.
+      In the <a href="https://docs.google.com/spreadsheets/d/1XBGYFv6E-iTCxA8g6vrWWFMOV7ihw_qN/edit?usp=sharing&ouid=114673541791947965182&rtpof=true&sd=true"target="_blank" rel="noopener noreferrer">dataset spanning over the decade</a>
+      each row represents an impacted region.
+    </p>
+    <p>To ensure consistency across the three sources, we standardized the dataset structure by including shared columns: a unique flood ID, year, date, country, 
+      affected regions, regional typologies, affected population, fatalities, flood type and cause (when available), and data sources.</p>
+    <p>
+      As mentioned earlier, we manually added the latest NUTS region codes to both the Copernicus and Public EM-DAT datasets. We used NUTS 3 codes, the smallest 
+      statistical regions available, to allow for classification by urban-rural and coastal-inland typologies using
+      <a href="https://docs.google.com/spreadsheets/d/1I8JJlCgQmybyjMRyTkb_YtZvMEPga3oc/edit?usp=sharing&ouid=114673541791947965182&rtpof=true&sd=true"target="_blank" rel="noopener noreferrer">Eurostat’s NUTS regions file</a>.
+      We used the same file to update Hanze’s region codes, that corresponded to the year 2021, to ensure alignment with the latest classifications.
+    </p>
+    <p>The most challenging part was translating region names into English, as Eurostat provides them in their respective national languages.
+    </p>
+    <h2>Official data gap on natural disasters
+    </h2>
+    <p>There is a clear need for a unified European dataset with standardized data collection methodologies,
+      especially as natural disasters become an increasing environmental and humanitarian crisis. Addressing this data gap should be a priority in European policy.
+    </p>
+    <p>Such data is typically collected by national authorities, and its availability depends on each country's
+      policies and commitment to transparency. Our research showed that most data on deaths caused by floods have
+      originates from media publications and local reporting rather than official sources, while economic loss data,
+      often gathered by insurance companies, remains unavailable to the public.
+    </p>
+    <p>In this context, Copernicus satellite data stands out as an open, free, and reliable resource for tracking the impact of natural disasters.
+      This methodology can also be adapted to support other European projects focused on disasters 
+      such as wildfires and earthquakes, or to strengthen local-level monitoring, preparedness, and response.
+    </p>
+  </div>  
+</body>
+</html>
