@@ -37,7 +37,7 @@ The project was a collaboration of 6 EDJNet members: [MIIR]([https://miir.gr/) (
 - Although rural areas experienced the largest flood extents, urban regions saw the highest damage to roads, pipelines, and communication networks.
 - Valencia's flood in 2024 and Thessaly's flood in 2023 were Europe’s most destructive floods. The Valencia flood was the deadliest, affecting 190,090 people and killing 232. The Thessaly flood claimed 17 lives and affected 122,375 hectares, 92% of which was farmland. The flood ultimately contributed to 335 deaths when post-flood mortality is considered.
 - In the last two years, floods have affected 4,256.20 km of transportation infrastructure (especially local roads) and 1,223.6 km of pipelines and communication infrastructure.
-- Despite increasing flood frequency and severity, Europe still lacks a centralized, consistent database for flood impact. The analysis had to reconcile data from Copernicus, EM-DAT, and Hanze, each using different methodologies, limiting long-term comparisons and undermining disaster preparedness.
+- Despite increasing flood frequency and severity, Europe still lacks a centralized, consistent database for flood impact. The analysis had to combine data from Copernicus, EM-DAT, and Hanze, each using different methodologies, limiting long-term comparisons and undermining disaster preparedness.
 
 ## Methodology Summary
 - Searched for open-access European flood datasets with key indicators (extent, land type, population, infrastructure).
