@@ -16,7 +16,7 @@ Troubled Waters is a data-driven research project analyzing flood impact on diff
 - [PRESSONE](https://pressone.ro/investigatie-ape-tulburi-impactul-devastator-al-inundatiilor-in-europa]) (RO)
 
 ## Project identity and credits
-Organised and coordinated by the Mediterranean Institute for Investigative Reporting (MIIR.gr) with the collaboration of the European Data Journalism Network ((EDJNet)[https://www.europeandatajournalism.eu/]).
+Organised and coordinated by the Mediterranean Institute for Investigative Reporting (MIIR.gr) with the collaboration of the European Data Journalism Network ([EDJNet](https://www.europeandatajournalism.eu/).
 - Data collection and analysis: Konstantina Maltepioti
 - Fact-checking: Eva Lopez ([DW](https://www.dw.com/en/top-stories/s-9097]))
 - Research: Kostas Zafeiropoulos (MIIR)
